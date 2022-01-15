@@ -1,0 +1,64 @@
+#main-menu {
+  height:calc(100vh - 40px);
+  overflow:auto;   
+}
+
+#main-menu ul{
+  background-color: #bab78e;
+  padding-left:15px;
+  list-style-type:none;
+}
+
+#main-menu li span.li-menu-block {
+  display: inline-block;
+  width: 100%;
+}
+
+#main-menu li a {
+  display: inline;
+  width: 100%;
+  text-decoration: none;
+  color:#000;
+}
+
+#main-menu li a:hover {
+  color:#fff;
+}
+#main-menu li a:visited {
+  
+}
+
+#main-menu li.active-trail > span > a {
+  color:red;
+}
+
+#main-menu li.level-1 a {
+  font-weight: bold;
+  font-size: 120%;
+}
+
+#main-menu li.level-2 a {
+  font-weight: bold;
+  font-size: 100%;
+}
+
+body.menu-open {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#main-menu li div{
+  display: none;
+}
+
+#main-menu li div.show {
+  display: block;
+}
+
+#admin-menu {
+  height:calc(100vh - 40px);
+  overflow:auto;   
+}
+
+

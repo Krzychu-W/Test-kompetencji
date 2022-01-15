@@ -1,0 +1,24 @@
+.click {
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  line-height: 20px;
+  /* margin-left: 4px; 
+   padding: 4px 12px; */
+  vertical-align: middle;
+  color: #00f;
+}
+.click:hover {
+  text-decoration: underline;
+}
+.click:focus {
+  text-decoration: none;
+}
+
+
+
+sup.reference {
+  cursor: pointer;
+  color: #0000EE;
+}
+

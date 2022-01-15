@@ -1,0 +1,33 @@
+table.border {
+  border: 1pt solid black;
+  border-collapse: collapse;
+  margin: 3px;
+}
+
+table.border tbody {
+  border: 0;
+}
+
+table.border tbody tr td  {
+  text-align: center;
+  vertical-align: middle;
+  border: 1pt solid black;
+  padding: 3px;
+}
+
+table.border tbody tr th  {
+  text-align: center;
+  vertical-align: middle;
+  border: 1pt solid black;
+  padding: 3px;
+}
+
+table.border tbody tr td p {
+  margin: 0;
+  padding: 0;
+}
+
+table.border tbody tr td p {
+  margin: 0;
+  padding: 0;
+}

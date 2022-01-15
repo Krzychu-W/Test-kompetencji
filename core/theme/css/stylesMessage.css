@@ -1,0 +1,52 @@
+/* Message */
+.messages-list {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 0;
+}
+
+.message-block {
+  box-sizing: border-box;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 1.5rem 1.5rem 2rem calc(1.5rem - 0.3125rem);
+  color: #fff;
+  border-width: 0 0 0 5px;
+  border-style: solid;
+  border-color: #353641;
+  border-radius: 2px;
+  background-color: #353641;
+}
+
+.message-block ul {
+  margin-left: 2.5rem;
+}
+
+.message-block ul li {
+  list-style: none;
+}
+
+.message-success {
+  border-color: #468847;
+}
+.message-success h4 {
+  color: #468847;
+}
+.message-error {
+  border-color: #b94a48;
+}
+.message-error h4 {
+  color: #b94a48;
+}
+.message-info {
+  border-color: #3a87ad;
+}
+.message-info h4 {
+  color: #3a87ad;
+}
+.message-warning {
+  border-color: #fbc02d;
+}
+.message-warning h4 {
+  color: #fbc02d;
+}

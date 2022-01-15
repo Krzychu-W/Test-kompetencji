@@ -1,0 +1,308 @@
+:root {
+  --base: #000;
+  --green: #ffc600;
+}
+
+/* RESET */
+
+*, *:before, *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+abbr, address, article, aside, audio, b, blockquote, body, canvas, caption, cite, code, dd, del, details, dfn, div, dl, dt, em, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, html, i, iframe, img, ins, kbd, label, legend, li, main, mark, menu, nav, object, ol, p, pre, q, samp, section, small, span, strong, sub, summary, sup, time, ul, var, video{
+    padding:0px;
+    margin:0px;
+    font-size:100%;
+    vertical-align:baseline;
+    background:none;
+    border:none;
+    outline:none;
+    float:none;
+}
+table, tbody, td, tfoot, th, thead, tr{
+  margin:0px;
+  font-size:100%;
+  vertical-align:baseline;
+  background:none;
+  outline:none;
+  float:none;
+}
+table, tbody, td, tfoot, th, thead, tr{
+  margin:0px;
+  font-size:100%;
+  vertical-align:baseline;
+  background:none;
+  outline:none;
+  float:none;
+}
+a, input, button, select, textarea{
+  outline:none;
+}
+html{
+  font-size:62.5%;
+}
+body{
+  line-height: 1.46em;
+  font-size:16px;
+  font-size:1.6rem;
+  font-family:Arial, Helvetica, sans-serif;
+  width:100%;  
+}
+
+.block .content ul, .tresc ul, .block .content ol, .tresc ol{
+  display:table;
+  margin: 0.5em 1.5em;
+}
+a{
+  display:inline-block;
+  text-decoration:none;
+  max-width:100%;
+}
+p > a, td > a, li > a, h2 > a, h1 > a, h3 > a, h4 > a{
+  display:inline;
+}
+sup{
+    font-size: smaller;
+    vertical-align: super;
+}
+sub{
+    font-size: smaller;
+    vertical-align: sub;
+}
+
+p{
+  margin-bottom:1em;
+}
+p:last-child{
+  margin-bottom:0;
+}
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+img{
+  max-width:100%;
+  width:auto;
+  height:auto;
+}
+button{
+  cursor:pointer;
+}
+
+/* START */
+
+body {
+  color: var(--base);
+}
+@media screen and (max-width: 300px) {
+  body {
+    background-color: #fff;
+    
+  }
+  div.root { background-color: #000;}
+}
+
+/* On screens that are 600px or less, set the background color to olive */
+@media screen and (max-width: 600px) {
+  body {
+    background-color: #fff;
+    
+  }
+  div.root { background-color: #fff;}
+}
+/* Ustawienia developerskie */
+html, body {
+  min-height:100vh;
+}
+
+body {
+  background-color: #fff;
+}
+div.top {
+  color: #fff;
+  background-color: #000;
+  position:fixed;
+  width:100%;
+  line-height:40px;
+  font-size:2.0rem;      
+  z-index: 1;
+}
+
+/* 1 rem tp 16 px */
+
+div.root {
+  background-color: #fff;
+  min-width:360px;
+  max-width:1024px;
+  margin: 0 auto;
+  min-height:100vh;
+  display:flex;
+  height:100%;
+  flex-direction:column;   
+}
+div.root > *{
+  width:100%;
+}
+div.root > footer{
+  margin-top:auto;
+}
+header { background-color: #fff;}
+main { background-color: #fff;}
+
+
+/* Padding */
+
+header { padding: 1px;}
+main {  padding: 1px;}
+footer {
+    clear: both;
+    padding: 0 20px;
+    box-shadow: 0 -1px 3px #ccc;
+    background: #CCC;
+    color: #000;
+    line-height: 40px;
+}
+
+div.top-flex {
+  display:flex;
+  margin: auto;
+  max-width: 1024px;
+}
+div.top-flex .three-dash {
+	margin: 0 0 0 5px;
+  background-color: blue;
+  padding: 0;
+  border: 0;
+  height: 40px;
+}
+
+div.top-flex .three-dash svg {
+	fill:#fff;
+  background-color: #000;
+	padding: 0;
+}
+
+div.top-flex .title {
+	margin-left:5px;
+	margin-right:auto;
+  white-space:nowrap;
+  overflow:hidden;
+}
+
+div.top-flex .three-user {
+	margin: 0 0 0 5px;
+  background-color: blue;
+  padding: 0;
+  border: 0;
+  height: 40px;
+}
+
+div.top-flex .three-user svg {
+	fill:#fff;
+  background-color: #000;
+	padding: 0;
+  margin-left:auto;
+	margin-right:0;
+}
+
+
+div.top-flex .user {
+	margin-left:5px;
+	margin-right:5px;
+}
+
+
+
+
+
+div.top-flex .three-search {
+	margin: 0 0 0 5px;
+  background-color: blue;
+  padding: 0;
+  border: 0;
+  height: 40px;
+}
+
+div.top-flex .three-search svg {
+	padding: 0;
+  margin-left:auto;
+	margin-right:0;
+  stroke:#fff;
+  stroke-width:3;
+  background-color: #000;
+}
+
+
+div.top-flex .user {
+	margin-left:5px;
+	margin-right:5px;
+}
+
+#panel-main, #panel-user, #panel-search {
+  max-width: 1024px
+}
+
+footer {
+  display:flex;
+  margin: auto;
+  max-width: 1024px;
+}
+
+footer .contact {
+	margin-left:auto;
+	margin-right:5px;
+}
+
+body.admin-contact #form-field-subject-wrapper {
+  display: none;
+}
+
+div.slogan {
+  text-align: center;
+  font-size: 1.4em;
+  margin: 7px 0;
+  word-spacing: 0.1em;
+  font-style: italic;
+  text-align: center;
+}
+
+table.table-of-contents  {
+  width: 100%;
+  
+}
+
+table.table-of-contents a:link {
+  text-decoration: none;
+  border-collapse: collapse;
+}
+
+table.table-of-contents td.label-2 {
+  padding-left:30px;
+} 
+
+table.table-of-contents td.label-3 {
+  padding-left:60px;
+}
+
+table.table-of-contents td.label-4 {
+  padding-left:90px;
+}
+
+table.table-of-contents td.label-5 {
+  padding-left:120px;
+}
+
+table.table-of-contents td.page {
+  text-align: right;
+}
+
+table.table-of-contents td {
+  border-bottom: 1px solid #aaa;
+}
+
+
