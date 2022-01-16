@@ -1,0 +1,25 @@
+<Files *.php>
+    Order Deny,Allow
+    Deny from all
+</Files>
+<Files *.json>
+    Order Deny,Allow
+    Deny from all
+</Files>
+<Files index.php>
+    Order Allow,Deny
+    Allow from all
+</Files>
+
+RewriteEngine On
+RewriteBase /
+RewriteRule ^$ / [QSA]
+
+#RewriteCond %{REQUEST_FILENAME} upload/images/thumb(.*)
+#RewriteRule ^(.*)$ /upload/images/index.php?str=$1 [QSA,L]
+
+#RewriteCond %{REQUEST_FILENAME} /upl/(.*)
+#RewriteRule ^(.*)$ index.php/$1 [QSA,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php?q=$1 [QSA,L]

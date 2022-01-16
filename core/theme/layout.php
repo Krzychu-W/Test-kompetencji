@@ -41,6 +41,7 @@
                 <?php if (qLayout::has('navigation')) { ?>
                     <div id="navigation"><?= qLayout::get('navigation') ?></div>
                 <?php } ?>
+                <div><?= qMenuPanel::renderUser(); ?></div>
                 <?= qBreadcrumb::render() ?>
                 <article>
                     <h1 class="main-title"><?= qLayout::title() ?></h1>

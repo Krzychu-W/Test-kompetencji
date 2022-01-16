@@ -34,10 +34,28 @@ class qLoader {
     /**
      * Inkludowanie pliku php z definicją klasy.
      *
-     * @param string $class_name - naza klasy
+     * @param string $class_name - nazwa klasy
      */
     public static function autoload($class_name)
     {
+        $tabPath = explode('\\', $class_name);
+        if (count($tabPath) > 1 && 'Alteris' == $tabPath[0]) {
+
+            // szukaj w core\alteris
+            $pathFile = qConfig::get('path.root');
+            if (null === $pathFile) {
+                $pathFile = '.'.DIRECTORY_SEPARATOR;
+            } elseif ('/' != $pathFile) {
+                $pathFile .= DIRECTORY_SEPARATOR;
+            }
+            $pathFile .= 'extra'.DIRECTORY_SEPARATOR;
+            $pathFile .= implode(DIRECTORY_SEPARATOR, $tabPath).'.php';
+            if (file_exists($pathFile)) {
+                require_once $pathFile;
+            } else {
+                echo 'no file: '.$pathFile.'<br />';
+            }
+        }
         $file = self::fileClass($class_name);
         if ($file) {
             require_once $file;
