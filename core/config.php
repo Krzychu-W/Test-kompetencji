@@ -66,5 +66,15 @@ $config['domain.current.short'] = false;
 
 $config['hash'] = 'jkasdhuianys72y3nhsjkh32yiuqhqw73uhwjdjashg7ey237';
 
+$config['sql.connect']['name'] = [
+    'driver' => 'mysql',
+    'host' => 'localhost',
+    'name' => 'struktury',
+    'user' => 'root',
+    'pass' => '',
+    'prefix' => '',
+];
+
+
 
 return $config;
