@@ -15,6 +15,8 @@ class qGroupController extends qControllerAction {
             qLayout::title('Lista grup materiałów');
             $block = new qTemplate();
             qLayout::set('content', $block->render('group/list'));
+
+            $table = new Alteris\Unit\Table();
         }
         else {
             $this->page404();
