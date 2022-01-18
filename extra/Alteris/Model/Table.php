@@ -10,56 +10,41 @@ namespace Alteris\Model;
 abstract class Table
 {
     /** @var array model danych w postaci tablicy prostej wczytanej z init */
-    protected $data = false;
+    protected $table = [];
 
+    protected $field = [];
 
+    protected $index = [];
+
+    protected $unique = [];
 
     /** @var int Hierarchia (0 - bez hierarchi,1 - tylko ordering, 2 - zagłębienia 1, itp */
     protected $hierarchy = 0;
 
-    /**
-     * Tablca atrybutów validacyjnych.
-     *
-     * @var array
-     */
-    protected $validate = false;
-
-    /**
-     * Objekt validacyjny.
-     *
-     * @var type
-     */
-    protected $validatObj = false;
-
     /** konstruktor  */
     public function __construct($domain_id = false)
     {
-        $this->data = [
-            'table' => [],
-            'field' => [],
-            'record' => 'StormModelRecord',
-            'index' => [],
-            'unique' => [],
-        ];
         // inicjowanie modelu
         $this->init();
     }
 
     public function setTable($name, $attribs) {
-        $this->data['table'] = ['name' => $name];
+        $this->table = [
+            'name' => $name
+        ];
         $this->addField('id', 'AUTO_INCREMENT');
     }
 
     public function addField($name, $attribs) {
-        $this->data[$name] = $this->parseFieldAttribs($attribs);
+        $this->field[$name] = $this->parseFieldAttribs($attribs);
     }
 
     public function addIndex($name, $fields) {
-        $this->data['index'][$name] = $fields;
+        $this->index[$name] = $fields;
     }
 
     public function addUnique($name, $fields) {
-        $this->data['unique'][$name] = $fields;
+        $this->unique[$name] = $fields;
     }
 
     public function setHierarchy($deep) {
@@ -79,7 +64,14 @@ abstract class Table
 
 
     public function getFields() {
-        return $this->data['field'];
+        return $this->field;
+    }
+
+    /**
+     * @return \Alteris\Model\Record
+     */
+    public function objRecord() {
+        return new \Alteris\Model\Record($this);
     }
 
 
@@ -90,9 +82,9 @@ abstract class Table
      */
     public function newRecord()
     {
-        $modelClass = $this->data['record'];
-        $obj = new $modelClass($this);
+        $obj = $this->objRecord();
         $obj->setNew();
+        $obj->defFields($this->field);
 
         return $obj;
     }
@@ -102,24 +94,28 @@ abstract class Table
      *
      * @param int   $id
      *
-     * @return mixed
+     * @return object
      */
     public function getRecord($id)
     {
-        $modelClass = $this->data['record'];
-        $obj = new $modelClass($this);
-        if ($obj->load($id)) {
+        $obj = $this->objRecord();
+        $obj->defFields($this->field);
+        $sql = "SELECT * FROM `{$this->table['name']}` WHERE id='{$id}'";
+        $row = \qDb::connect()->select($sql)->row();
+        if ($row) {
+            $obj->setValues($row);
             return $obj;
         }
-
-        return false;
+        else {
+            throw new Exception('Nie ma takiego rekordu');
+        }
     }
 
     /**
      * Ładuje rekord na podstawie przekazanych wartości pól.
      *
      *
-     * @return false|StormModelRecord
+     * @return false|Alteris\Model\Record
      */
     public function initRecord($fields)
     {
@@ -147,6 +143,7 @@ abstract class Table
             'extra' => '',
             'null' => 'NO',
             'attribs' => '',
+            'default' => null,
         ];
         foreach(explode(';', $attribs) as $attr) {
             list($n, $v) = \qString::explodeList(':', $attr, 2, '');
@@ -166,6 +163,10 @@ abstract class Table
             {
                 $result['attribs'] = $v;
             }
+            else if ($n === 'default')
+            {
+                $result['default'] = $v;
+            }
             else {
                 $result['extra'] = $n;
             }
@@ -179,6 +180,42 @@ abstract class Table
     public function getHierarchy()
     {
         return $this->hierarchy;
+    }
+
+    /**
+     * @param array $fields
+     * @param bool $isNew
+     * @return integer
+     * @throws Exception
+     */
+    public function saveRecord($fields, $isNew = false) {
+        $connect = \qDb::connect();
+        if ($isNew) {
+            if (array_key_exists('id', $fields)) {
+                unset($fields['id']);
+            }
+            $connect->insert($this->table['name'], $fields);
+            $error = $connect->errorCode();
+            if ($error) {
+                throw new \Exception($connect->error());
+            }
+            $id = $connect->lastInsertId();
+        }
+        else {
+            if (!array_key_exists('id', $fields)) {
+                throw new Exception('Brak pola id');
+            }
+            $id = $fields['id'];
+            unset($fields['id']);
+            $connect->update($this->table['name'], $fields, ['id' => $id]);
+            $error = $connect->errorCode();
+            if ($error) {
+                throw new Exception($connect->error());
+            }
+            $id = $fields['id'];
+        }
+
+        return $id;
     }
 
 

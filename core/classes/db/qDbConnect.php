@@ -290,9 +290,10 @@ class qDbConnect
         $bind = array();
         foreach ($fields as $col => $val) {
             $cols[] = '`'.$col.'`';
-            if ($val instanceof qPdoExpr) {
+            if ($val instanceof \qPdoExpr) {
                 $vals[] = $val->__toString();
-            } else {
+            }
+            else {
                 $vals[] = ':'.$col;
                 $bind[':'.$col] = $val;
             }
@@ -301,26 +302,23 @@ class qDbConnect
         if ($ignore) {
             $sql .= ' IGNORE';
         }
-        $sql .= ' INTO '
-      .'`'.$table.'`'
-      .' ('.implode(', ', $cols).') '
-      .'VALUES ('.implode(', ', $vals).')';
+        $sql .= ' INTO `'.$table.'` ('.implode(', ', $cols).') '
+                .'VALUES ('.implode(', ', $vals).')';
         $this->query($sql, $bind, $logError);
 
         return $this->numRows;
     }
 
-    public function update($table, array $fields, $where = [])
+    public function update(string $table, array $fields, array $where)
     {
         if ('#' == substr($table, 0, 1)) {
             $table = $this->prefix.substr($table, 1);
         }
-
         $sets = array();
         $keys = array();
         $bind = array();
         foreach ($fields as $col => $val) {
-            if ($val instanceof qPdoExpr) {
+            if ($val instanceof \qPdoExpr) {
                 $sets['`' . $col . '`'] = $val->__toString();
             } elseif (is_null($val)) {
                 $sets['`' . $col . '`'] = 'null';
@@ -329,11 +327,11 @@ class qDbConnect
                 $bind[':'.$col] = $val;
             }
         }
-        if ($where instanceof qPdoExpr) {
+        if ($where instanceof \qPdoExpr) {
             $where = $where->__toString();
         } else {
             foreach ($where as $col => $val) {
-                if ($val instanceof qPdoExpr) {
+                if ($val instanceof \qPdoExpr) {
                     $keys['`'.$col.'`'] = $val->__toString();
                 } else {
                     $keys['`' . $col . '`'] = ':__' . $col . '__';

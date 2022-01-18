@@ -16,7 +16,11 @@ class qGroupController extends qControllerAction {
             $block = new qTemplate();
             qLayout::set('content', $block->render('group/list'));
 
-            $table = new Alteris\Unit\Table();
+            $table = new Alteris\Unit\Table(10);
+            $obj = $table->getRecord(10);
+            $obj->name = 'Korzec33';
+            $xx = $obj->save();
+            qLog::dump($xx);
         }
         else {
             $this->page404();
