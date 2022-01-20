@@ -9,20 +9,39 @@ namespace Alteris\Model;
 
 abstract class Table
 {
-    /** @var array model danych w postaci tablicy prostej wczytanej z init */
-    protected $table = [];
+    /**
+     * Definicja tabeli
+     *
+     * @var array
+     */
+    protected array $table = [];
 
-    protected $field = [];
+    /**
+     * Definicja pól
+     *
+     * @var array
+     */
+    protected array $field = [];
 
-    protected $index = [];
+    /**
+     * Definicja indeksów
+     *
+     * @var array
+     */
+    protected array $index = [];
 
-    protected $unique = [];
+    /**
+     * Definicja indeksów unikatowych
+     *
+     * @var array
+     */
+    protected array $unique = [];
 
     /** @var int Hierarchia (0 - bez hierarchi,1 - tylko ordering, 2 - zagłębienia 1, itp */
     protected $hierarchy = 0;
 
     /** konstruktor  */
-    public function __construct($domain_id = false)
+    public function __construct()
     {
         // inicjowanie modelu
         $this->init();
@@ -63,79 +82,86 @@ abstract class Table
 
 
 
+
+
     public function getFields() {
         return $this->field;
     }
 
     /**
+     * Model standardowy rekordy, z reguły nadpisywany w potomku
+     *
      * @return \Alteris\Model\Record
      */
-    public function objRecord() {
+    private function objRecord() {
         return new \Alteris\Model\Record($this);
     }
 
 
     /**
-     * Dodanie nowego rekordu.
+     * Utworzenie nowego, pustego rekordu.
      *
-     *
+     * @return object
      */
     public function newRecord()
     {
         $obj = $this->objRecord();
-        $obj->setNew();
         $obj->defFields($this->field);
+        $obj->setNew();
 
         return $obj;
     }
 
     /**
-     * Ładuje rekord.
+     * Utworzenie rekordu z SQL na podstawie ID.
      *
-     * @param int   $id
+     * @param mixed $id
      *
      * @return object
      */
-    public function getRecord($id)
+    public function getRecord($id):object
     {
         $obj = $this->objRecord();
         $obj->defFields($this->field);
         $sql = "SELECT * FROM `{$this->table['name']}` WHERE id='{$id}'";
         $row = \qDb::connect()->select($sql)->row();
+
         if ($row) {
             $obj->setValues($row);
             return $obj;
         }
         else {
-            throw new Exception('Nie ma takiego rekordu');
+            throw new \Exception('Nie ma takiego rekordu');
         }
     }
 
     /**
-     * Ładuje rekord na podstawie przekazanych wartości pól.
+     * Utworzenie rekordu z bazy danych na wiersza z sql lub tablicy asocjacyjnej
      *
+     * @param array|object $row
      *
-     * @return false|Alteris\Model\Record
+     * @return object
      */
-    public function initRecord($fields)
+    public function rowRecord($row):object
     {
-        $modelClass = $this->data['record'];
-        $obj = new $modelClass($this);
-        if ($obj->load($fields)) {
-            return $obj;
+        $obj = $this->objRecord();
+        $obj->defFields($this->field);
+        if (is_object($row)) {
+            $row = (array)$row;
         }
+        $obj->setValues($row);
 
-        return false;
+        return $obj;
     }
 
     /**
-     * Funkcja zmienia atrybuty a tablica opisująca pole sql.
+     * Inicjacja atrybutów pól
      *
-     * @param array $attribs
+     * @param string $attribs
      *
      * @return array
      */
-    private function parseFieldAttribs($attribs)
+    private function parseFieldAttribs(string $attribs):array
     {
         $result = [
             'type' => 'Integer',
@@ -183,12 +209,15 @@ abstract class Table
     }
 
     /**
-     * @param array $fields
-     * @param bool $isNew
-     * @return integer
-     * @throws Exception
+     * Funkcja zapisująca dane do SQL
+     *
+     * @param array $fields - tablica asocjacyjna
+     * @param bool $isNew - czy to nowy rekord
+     * @return integer - ID zapisanego rekordu, 0 w przypadku niepowodzenia
+     * @throws \Exception
      */
-    public function saveRecord($fields, $isNew = false) {
+    public function saveRecord($fields, $isNew = false)
+    {
         $connect = \qDb::connect();
         if ($isNew) {
             if (array_key_exists('id', $fields)) {
@@ -200,17 +229,16 @@ abstract class Table
                 throw new \Exception($connect->error());
             }
             $id = $connect->lastInsertId();
-        }
-        else {
+        } else {
             if (!array_key_exists('id', $fields)) {
-                throw new Exception('Brak pola id');
+                throw new \Exception('Brak pola id');
             }
             $id = $fields['id'];
             unset($fields['id']);
             $connect->update($this->table['name'], $fields, ['id' => $id]);
             $error = $connect->errorCode();
             if ($error) {
-                throw new Exception($connect->error());
+                throw new \Exception($connect->error());
             }
             $id = $fields['id'];
         }
@@ -218,6 +246,17 @@ abstract class Table
         return $id;
     }
 
+    /**
+     * Usunięcie rekordu
+     *
+     * @param mixed $id
+     * @return bool
+     */
+    public function delete($id):bool
+    {
+
+        return \qDb::connect()->delete($this->table['name'], ['id' => $id]);
+    }
 
 
 }

@@ -1,9 +1,14 @@
 <?php
-
+/**
+ * Kontroler grup
+ *
+ * @author Krzysztof Wałek <krzysztof@struktury.net>
+ */
 class qGroupController extends qControllerAction {
     
     public function action() {
-        
+
+        // kontrola metody
         $argsControl = $this->getArgs();
         if (count($argsControl) == 0 || $argsControl[0] === 'index') {
             $action = 'list';
@@ -11,16 +16,20 @@ class qGroupController extends qControllerAction {
         else {
             $action = $this->getArg(0);
         }
+
+        // obsługa metod
         if ($action === 'list') {
             qLayout::title('Lista grup materiałów');
             $block = new qTemplate();
             qLayout::set('content', $block->render('group/list'));
 
-            $table = new Alteris\Unit\Table(10);
-            $obj = $table->getRecord(10);
+            $table = new Alteris\Unit\Table();
+            $obj = $table->getRecord(11);
+
+
             $obj->name = 'Korzec33';
             $xx = $obj->save();
-            qLog::dump($xx);
+
         }
         else {
             $this->page404();

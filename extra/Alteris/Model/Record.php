@@ -9,134 +9,84 @@ namespace Alteris\Model;
  */
 class Record
 {
-    /** @var StormModelTable odnośnik do modelu */
-    protected $table = false;
+    /**
+     * Referencja do tabela modelu
+     *
+     * @var object
+     */
+    protected object $table;
 
-    /** @var array() Tabela z polami */
-    protected $fields = [];
+    /**
+     * Tabela asocjacyjna w woartością rekordu
+     *
+     * @var array
+     */
+    protected array $fields = [];
 
     /** @var bool Czy to jest nowy rekord */
-    protected $isNew = true;
-
-    /** czy rekord jest zapisany w obecnej postaci */
-    protected $isSaved = true;
-
 
     /**
-     * lista błędów validatora.
+     * Oznaczenie czy to nowy rekord niemający jeszcze zapisu w SQL
      *
-     * @var bool|array
+     * @var bool
      */
-    protected $validateError = false;
-
-
-
+    protected bool $isNew = false;
 
     /**
-     * @param StormModelTable $model
+     * Konstruktor, parametrem jest tabela modelu
+     *
+     * @param object $table
      */
     public function __construct(&$table)
     {
-        // incjowanie modelu
+        // inicjowanie modelu
         $this->table = $table;
-        $this->fields = [];
     }
 
     /**
-     * Ładuje rekord o określonym id.
-     * @param int   $id
+     * Odczytuje, czy to jest nowy rekord
      *
-     * @return bool sukces lub porażka
+     * @return bool
      */
-    public function load($id)
-    {
-        $fields = $this->table->loadItem($id);
-        if (false === $fields) {
-            $this->fields = [];
-            return false;
-        }
-        $this->isNew = false;
-        $columns = $this->model->driver()->fieldSource();
-        foreach ($this->table->getFields() as $key => $attribs) {
-
-            if ($this->multilang) {
-
-            } else {
-                $is = false;
-                if (is_array($columns[$key])) {
-                    $this->fields[$key] = [];
-                    foreach ($columns[$key] as $sub) {
-                        if (isset($fields[$key.'_'.$sub])) {
-                            foreach ($fields[$key.'_'.$sub] as $ord => $value) {
-                                $this->fields[$key][$ord][$sub] = $value;
-                            }
-                            $is = true;
-                        }
-                    }
-                } elseif (isset($fields[$columns[$key]])) {
-                    $this->fields[$key] = $this->jsonDecode($attribs, $fields[$columns[$key]]);
-                    $is = true;
-                }
-                if (!$is) {
-                    $this->fields[$key] = array();
-                    $class = $this->className($attribs['type']);
-                    $obj = new $class($this, $key, 0, $attribs);
-                    $obj->setNew();
-                }
-            }
-        }
-
-        $this->temporaryFields += array_diff_key($fields, $this->fields);
-        $this->domains_array = [];
-        foreach ($this->selectRowsDomain() as $row) {
-            $this->domains_array[] = $row->domain_id;
-        }
-
-        return true;
-    }
-
-    public function isNew()
+    public function isNew():bool
     {
         return $this->isNew;
     }
 
     /**
-     * Wypełnia rekord domyślnymi wartościami.
+     * Ustawia rekord jako new, przydatne przy klonowaniu
      *
-
      */
     public function setNew()
     {
-        $this->fields = [];
         $this->isNew = true;
+        $this->setValue('id', null);
     }
 
     /**
-     * Zapisuje model za pomocą drivera.
+     * Zapisuje model w SQL
      *
-     * @return mixed id zapisanego rekordu lub false
+     * @return integer id zapisanego rekordu lub 0 w wypadku porażki
      */
-    public function save()
+    public function save():int
     {
         $id = $this->table->saveRecord($this->getValues(), $this->isNew);
         if ($id > 0) {
             $this->setValue('id', $id);
         }
         if ($id > 0) {
-            $this->isSaved = true;
             $this->isNew = false;
         }
         return $id;
     }
 
     /**
-     * Usunięcie rekodu.
+     * Usunięcie rekordu.
      *
-     * @todo Metoda nieobsłużona
      */
     public function delete()
     {
-        return $this->model->delete($this->id);
+        return $this->table->delete($this->getValue('id'));
     }
 
     public function defFields($fields) {
@@ -150,7 +100,6 @@ class Record
             $this->fields[$name] = $value;
             return true;
         }
-
         return false;
     }
 
@@ -165,7 +114,7 @@ class Record
     }
 
     public function hasField($name) {
-        return (isset($this->fields[$name]));
+        return (array_key_exists($name, $this->fields));
     }
 
     public function getValue($name)
