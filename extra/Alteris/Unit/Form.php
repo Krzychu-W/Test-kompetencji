@@ -28,11 +28,20 @@ class Form extends \Alteris\Model\Form
         $field->value = $record->id;
 
         $field = $this->FormFieldText('name');
-        $field->description = 'Nazwa jednostki miary';
+        $field->description = 'Nazwa jednostki miary<br>
+<i>Dopuszczalny rozmiar to 24, pole celowo większe, żeby pokazać walidację<br>
+Dodatkowo walidacja nie dopuszcza do duplikacji nazw';
         $field->size = 24;
         $field->maxlength = 250;
-        $field->label = 'nazwa';
+        $field->label = 'Nazwa jednostki';
         $field->value = $record->name;
+        $field->required = true;
+
+        $field = $this->FormFieldText('short');
+        $field->size = 4;
+        $field->maxlength = 4;
+        $field->label = 'Skrót nazwy';
+        $field->value = $record->short;
         $field->required = true;
 
         $actions = $this->FormFieldActions('actions');
@@ -51,16 +60,50 @@ class Form extends \Alteris\Model\Form
         }
     }
 
-    // funkcje walidacji
+    // funkcje walidacji w/g nazy pól
+
     public function fieldNameValidate()
     {
-        $value = trim($this->name->value);
+        $value = $this->name->value = trim($this->name->value);
         if ($value == '') {
             $this->name->error = 'Pole nie może być puste';
+
             return false;
         }
-        // dodać unikalność
-        // dodać max długości (odczytać z definicji)
+        if (strlen($value) > $this->getRecord()->getTable()->getFields()['name']['size']) {
+            $this->name->error = 'Pole jest za długie';
+
+            return false;
+        }
+        // unikalność
+        $idByName = $this->getRecord()->getTable()->getIdByName($value);
+        if (($this->getRecord()->isNew() && $idByName)) {
+            $this->name->error = 'Ta nazwa jest już zajęta';
+
+            return false;
+        }
+        else if (!$this->getRecord()->isNew() && $idByName && $this->getRecord()->id != $idByName) {
+            $this->name->error = 'Ta nazwa jest już zajęta';
+
+            return false;
+        }
+
+        return true;
+    }
+
+    public function fieldShortValidate()
+    {
+        $value = $this->short->value = trim($this->short->value);
+        if ($value == '') {
+            $this->short->error = 'Pole nie może być puste';
+
+            return false;
+        }
+        if (strlen($value) > $this->getRecord()->getTable()->getFields()['short']['size']) {
+            $this->short->error = 'Pole jest za długie';
+
+            return false;
+        }
 
         return true;
     }

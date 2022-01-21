@@ -233,16 +233,14 @@ abstract class Table
             if (!array_key_exists('id', $fields)) {
                 throw new \Exception('Brak pola id');
             }
-            $id = $fields['id'];
+            $id = (integer)$fields['id'];
             unset($fields['id']);
             $connect->update($this->table['name'], $fields, ['id' => $id]);
             $error = $connect->errorCode();
             if ($error) {
                 throw new \Exception($connect->error());
             }
-            $id = $fields['id'];
         }
-
         return $id;
     }
 

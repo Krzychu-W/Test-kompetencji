@@ -50,3 +50,7 @@
 .message-warning h4 {
   color: #fbc02d;
 }
+
+p.error {
+  color: red;
+}

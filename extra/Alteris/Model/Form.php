@@ -25,6 +25,12 @@ class Form extends \qForm
      */
     protected array $param = [];
 
+    public function __construct($params = [])
+    {
+        parent::__construct($params);
+        $this->setRecord($params);
+    }
+
     /**
      * Referencja do rekordu
      *

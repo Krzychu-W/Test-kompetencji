@@ -162,7 +162,7 @@ class qForm extends qFormTree
     {
         // nowy token
         $token_key = $_name.'_'.$_id;
-        $token = md5(qSession::id().qUser::account()->uid.$token_key.qConfig::get('hash'));
+        $token = md5(qSession::id().$token_key.qConfig::get('hash'));
         $_SESSION['tokens'][$token_key] = $token;
 
         return '<input type ="hidden" name="'.$_name.'[_token_]" value="'.$_SESSION['tokens'][$token_key].'" />'."\n";

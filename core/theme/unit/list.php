@@ -3,6 +3,7 @@
     <tr>
         <th>ID</th>
         <th>Nazwa</th>
+        <th>Skrót</th>
         <th>Akcja</th>
     </tr>
     </thead>
@@ -11,6 +12,7 @@
         <tr>
             <td><?= $item->id ?></td>
             <td><?= $item->name ?></td>
+            <td><?= $item->short ?></td>
             <td class="action">
                 <a class="edit" href="<?= qHref::link('unit/edit/'.$item->id) ?>" title="Edit">Edit</a>
             </td>

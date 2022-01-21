@@ -21,6 +21,7 @@ class Table extends \Alteris\Model\Table
     public function init() {
         $this->setTable('unit', 'autoincrement');
         $this->addField('name', 'type:Varchar;size:24;default:');
+        $this->addField('short', 'type:Varchar;size:4;default:');
         $this->addIndex('name', ['name']);
     }
 
@@ -33,6 +34,11 @@ class Table extends \Alteris\Model\Table
         return new \Alteris\Unit\Record($this);
     }
 
+    /**
+     * Zwraca listę obiektów \Alteris\Model\Record
+     *
+     * @return array
+     */
     public function getAllRecords() {
         $sql = "SELECT * FROM `unit` ORDER BY `name`";
         $result = [];
@@ -41,5 +47,21 @@ class Table extends \Alteris\Model\Table
         }
         return $result;
     }
+
+    /**
+     * Zwraca id rekordu w/g nazwy
+     *
+     * @param string $name
+     * @return bool|integer
+     */
+    public function getIdByName(string $name)
+    {
+        $sql = "SELECT id FROM `unit` WHERE `name` = '{$name}'";
+
+        return \qDb::connect()->select($sql)->result();
+    }
+
+
+
 
 }

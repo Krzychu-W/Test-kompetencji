@@ -477,6 +477,116 @@ class qDbConnect
         return $select->result();
     }
 
+    // SELEKTY
+
+    public function rows($object = true)
+    {
+        $rows = array();
+
+        if($object) {
+            foreach ($this->statement->fetchAll(PDO::FETCH_ASSOC) as $row) {
+                $rows[] = (object)$row;
+            }
+        }
+        else {
+            foreach ($this->statement->fetchAll(PDO::FETCH_ASSOC) as $row) {
+                $rows[] = (array)$row;
+            }
+        }
+
+        $this->statement->closeCursor();
+        $this->numRows = count($rows);
+
+        return $rows;
+    }
+
+    public function indexRows($cIndex)
+    {
+        $rows = array();
+        foreach ($this->rows() as $row) {
+            $rows[$row->$cIndex] = $row;
+        }
+
+        return $rows;
+    }
+
+    public function row($object = true)
+    {
+        $row = false;
+        $res = $this->statement->fetch(PDO::FETCH_ASSOC);
+        if ($res) {
+            if($object) {
+                $row = (object)$res;
+            }
+            else {
+                $row = (array)$res;
+            }
+        }
+        $this->statement->closeCursor();
+
+        return $row;
+    }
+
+    /**
+     * Funkcja zwraca pierwszą kolumnę pierwszego wiersza zapytnia.
+     */
+    public function result()
+    {
+        $one = false;
+        $one = $this->statement->fetchColumn(0);
+        $this->statement->closeCursor();
+
+        return $one;
+    }
+
+    public function nextRecord()
+    {
+        $res = $this->statement->fetch(PDO::FETCH_ASSOC);
+        if ($res) {
+            $row = (object) $res;
+        }
+
+        return $row;
+    }
+
+    public function count()
+    {
+        if (false === $this->numRows) {
+            if ('SELECT * FROM' == substr($this->sql, 0, 13)) {
+                $old = $this->sql;
+                $sql = 'SELECT count(*) FROM'.substr($this->sql, 13);
+                $this->query($sql);
+                $this->sql = $old;
+                $count = 0;
+                if (false === $this->result) {
+                    return 0;
+                } elseif (true === $this->result) {
+                    return 0;
+                }
+                $this->numRows = mysql_num_rows($this->result);
+                if ($this->numRows > 0) {
+                    $row = $this->nextRecordNum();
+                    if (false != $row) {
+                        $this->numRows = stripcslashes($row[0]);
+                    }
+                }
+                $this->connect->freeResult();
+            } else {
+                $this->query($this->sql);
+                if (false === $this->result) {
+                    return 0;
+                } elseif (true === $this->result) {
+                    // to nie select
+                    return 0;
+                }
+                $this->numRows = mysql_num_rows($this->result);
+                $this->connect->freeResult();
+            }
+        }
+
+        return $this->numRows;
+    }
+
     /**
      * Usuwa tabelę.
      *

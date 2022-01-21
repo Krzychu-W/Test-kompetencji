@@ -264,17 +264,7 @@ qAnt.ajax = {
         item['loader'] = option['loader'];
       }
     }
-    if (phpScript) {
-      var checkLang = phpScript.split('/')[0];
-      var lang = '';
-      if(checkLang.match('^[a-z]{2}$')) {
-        lang = '';
-      } 
-      else {
-        lang = '/' + qAnt.setting.lang;
-      }
-    }
-    item['phpScript'] = qAnt.setting.subway + lang + '/ajax/' + item['type'] + '/' + phpScript;
+    item['phpScript'] = qAnt.setting.subway + '/ajax/' + item['type'] + '/' + phpScript;
     // na stos
     this.queue[this.queue.length] = item;
     this.send();

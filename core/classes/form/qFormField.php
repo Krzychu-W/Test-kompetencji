@@ -260,9 +260,6 @@ class qFormField extends qFormTree
         }
         $html = '';
         if ($title) {
-            if ('`' == substr($title, 0, 1)) {
-                $title = qTrans::get(substr(substr($title, 0, strlen($title) - 1), 1));
-            }
             $html .= "<label for=\"{$this->id}\">{$title}";
             $html .= $this->requiredLabel();
             $html .= "</label>\n";
@@ -276,7 +273,7 @@ class qFormField extends qFormTree
         $html = '';
         if ($this->hasItem('required') && $this->item('required')) {
             $star = '*';
-            $text = qTrans::get('field-required');
+            $text = 'Pole jest wymagane';
             $required = $this->item('required');
             if (false !== $required) {
                 if (is_string($required)) {
