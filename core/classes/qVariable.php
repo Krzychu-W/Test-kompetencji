@@ -5,7 +5,7 @@
  * Class Variable
  * Przechowywuje zmienne w pamięci podczs jednego przebiegu programu.
  *
- * @author Krzysztof Wałek <krzysztof.w@investmag.pl>
+ * @author Krzysztof Wałek <krzysztof@struktury.net>
  */
 class qVariable
 {

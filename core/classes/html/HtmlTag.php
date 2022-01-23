@@ -4,7 +4,7 @@
 /**
  * Parsowanie tagów
  * 
- * @author Krzysztof Wałek <krzysztof.w@investmag.pl>
+ * @author Krzysztof Wałek <krzysztof@struktury.net>
  */
 class HtmlTag
 {

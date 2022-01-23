@@ -93,7 +93,7 @@ abstract class Table
      *
      * @return \Alteris\Model\Record
      */
-    private function objRecord() {
+    protected function objRecord() {
         return new \Alteris\Model\Record($this);
     }
 

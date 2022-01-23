@@ -50,7 +50,7 @@ Dodatkowo walidacja nie dopuszcza do duplikacji nazw';
         $field->value = 'Zapisz';
         $field->class = 'btn btn-primary';
 
-        if (!$record->isNew()) {
+        if (!$record->isNew() && !$record->isUsed()) {
             $field = $actions->FormFieldAlter('delete');
             $field->value = 'Usuń';
             $field->link = 'unit/delete/'.$record->id;

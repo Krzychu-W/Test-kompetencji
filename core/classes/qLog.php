@@ -13,9 +13,6 @@ class qLog {
     public $_tryb;
     /** @var array Zawartosc do wyświetlenia na ekran */
     public $_screen;
-    
-    const ADDRESS_ERROR = 'error@investmag.eu';
-    const ADDRESS_DEVELOPER = 'developer@investmag.eu';
 
     /** @var object Logger */
     public static $instance;
@@ -245,15 +242,6 @@ class qLog {
             } elseif ('screen_plain' == $xFile) {
                 $file = 'screen_plain';
                 unset($tab[0]);
-            } elseif ('fatal' == $xFile) {
-                $file = 'error';
-                $suffixSubject = 'Clouder Fatal Error: ';
-                unset($tab[0]);
-                $mail = trim(\qSetting::getUnd('log.fatal-mail', qLog::ADDRESS_ERROR));
-            } elseif ('developer' == $xFile) {
-                $file = false;
-                unset($tab[0]);
-                $mail = trim(\qSetting::getUnd('log.developer-mail', qLog::ADDRESS_DEVELOPER));
             } elseif ('mail' == $xFile) {
                 $file = false;
                 $mail = $tab[1];

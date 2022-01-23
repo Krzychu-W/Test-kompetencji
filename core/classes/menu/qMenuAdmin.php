@@ -27,8 +27,8 @@ class qMenuAdmin {
 
         if (count($items) > 0){
             $itemsAll[] = [
-                'title' => 'Użytkownik: ',
-                'class' => 'user',
+                'title' => '',
+                'class' => 'menu',
                 'items' => $items,
             ];
         }

@@ -26,7 +26,8 @@ class qUnitController extends qControllerAction {
             qLayout::set('submenu', $submenu->render());
             $uTable = new \Alteris\Unit\Table();
             $block = new qTemplate();
-            $block->items = $uTable->getAllRecords();
+            $sql = "SELECT *, (SELECT count(*) FROM `product` AS B WHERE B.`unit_id` = A.id) as count FROM `unit` AS A ORDER BY `name`";
+            $block->items = \qDb::connect()->select($sql)->rows();
             qLayout::set('content', $block->render('unit/list'));
         }
         else if ($action === 'edit') {
@@ -67,7 +68,7 @@ class qUnitController extends qControllerAction {
                     }
                     else {
                         $json->closeOverlay();
-                        $json->addAlert('Usunięcie nie powiodło się');
+                        $json->openOverlay('Usunięcie nie powiodło się', array('transition' => 'fade', 'closeButton' => 'false'));
                     }
                 }
                 else if ('uncommit' === $commit) {
@@ -84,7 +85,7 @@ class qUnitController extends qControllerAction {
                 }
             }
             else {
-                $json->addAlert('Błędne parametry');
+                $json->openOverlay('Błędne parametry', array('transition' => 'fade', 'closeButton' => 'false'));
             }
             qContentJson::setJson($json);
 
