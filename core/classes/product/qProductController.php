@@ -35,7 +35,7 @@ class qProductController extends qControllerAction {
         }
         else if ($action === 'edit') {
             // nadanie tytułu strony
-            qLayout::title('Edycja materialu');
+            qLayout::title('Edycja materiału');
             $id = qCtrl::arg(0, 0);
             if ($id) {
                 $pTable = new \Alteris\Product\Table();

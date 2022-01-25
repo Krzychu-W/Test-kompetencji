@@ -4,7 +4,7 @@
  *
  * @author Krzysztof Wałek <krzysztof@struktury.net>
  */
-namespace Alteris\Product;
+namespace Alteris\Group;
 
 
 class Table extends \Alteris\Model\Table
@@ -19,32 +19,28 @@ class Table extends \Alteris\Model\Table
      *   Tutaj obcięte do minimum.
      */
     public function init() {
-        $this->setTable('product', 'autoincrement');
-        $this->addField('indeks', 'type:Varchar;size:24;default:');
+        $this->setTable('group', 'autoincrement');
         $this->addField('name', 'type:Varchar;size:128;default:');
-        $this->addField('unit_id', 'type:Integer;attribs:UNSIGNED;default:0');
-        $this->addUnique('indeks', ['indeks']);
-        $this->addIndex('name', ['name']);
-        $this->addIndex('unit_id', ['unit_id']);
+        $this->addField('parent_id', 'type:Integer;attribs:UNSIGNED;default:0');
     }
 
     /**
      * Pobranie rekordu
      *
-     * @return \Alteris\Product\Record
+     * @return \Alteris\Group\Record
      */
     protected function objRecord() {
-        return new \Alteris\Product\Record($this);
+        return new \Alteris\Group\Record($this);
     }
 
     /**
-     * Zwraca listę obiektów \Alteris\Product\Record
+     * Zwraca listę obiektów \Alteris\Group\Record
      *
      * @return array
      */
     public function getAllRecords():array
     {
-        $sql = "SELECT * FROM `unit` ORDER BY `name`";
+        $sql = "SELECT * FROM `group` ORDER BY `name`";
         $result = [];
         foreach (\qDb::connect()->select($sql)->rows() as $row) {
             $result[$row->id] = $this->rowRecord($row);
@@ -52,18 +48,27 @@ class Table extends \Alteris\Model\Table
         return $result;
     }
 
-    /**
-     * Zwraca id rekordu w/g nazwy
-     *
-     * @param string $indeks
-     * @return bool|integer
-     */
-    public function getIdByIndeks(string $indeks)
-    {
-        $sql = "SELECT id FROM `product` WHERE `indeks` = '{$indeks}'";
+    public function getOptions($id = 0) {
+        $sql = "SELECT * FROM `group` ORDER BY `name`";
+        $result = [];
+        foreach (\qDb::connect()->select($sql)->rows() as $row) {
+            $result[$row->id] = $this->rowRecord($row);
+        }
+        return $result;
 
-        return \qDb::connect()->select($sql)->result();
+        $options = [];
+        if ($empty) {
+            $options[0] = $empty;
+        }
+        foreach ($this->getAllRows() as $row) {
+            $options[$row->id] = $row->name;
+        }
+
+        return $options;
+
+
     }
+
 
 
 
