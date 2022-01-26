@@ -25,10 +25,13 @@ class qGroupController extends qControllerAction {
             $submenu->add('Dodaj nową grupę', qHref::link('group/new'));
             qLayout::set('submenu', $submenu->render());
             $gTable = new \Alteris\Group\Table();
+
+$gTable->resetHierarchy();
+
             $block = new qTemplate();
             $sql  = "SELECT A.*\n";
             $sql .= "  FROM `group` AS A\n";
-            $sql .= " ORDER BY A.`name`";
+            $sql .= " ORDER BY A.`hierarchy`";
             $block->items = \qDb::connect()->select($sql)->rows();
             qLayout::set('content', $block->render('group/list'));
         }

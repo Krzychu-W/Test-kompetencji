@@ -35,7 +35,8 @@ class Form extends \Alteris\Model\Form
         $field->required = true;
 
         $field = $this->FormFieldSelect('parent_id');
-        $gTable = $this->getRecord()->getTable();
+
+        $gTable = $record->getTable();
 
         $field->options = $gTable->getOptions('- wybierz jednostkę nadrzędną');
         $field->label = 'Rodzic';

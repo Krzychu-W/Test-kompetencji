@@ -8,7 +8,7 @@
     <tbody>
     <?php foreach($items as $item) { ?>
         <tr>
-            <td><?= $item->name ?></td>
+            <td><?= str_repeat('&nbsp;&nbsp;&nbsp;',$item->deep-1).'+&nbsp;&nbsp;'.$item->name ?></td>
             <td class="action">
                 <a class="edit" href="<?= qHref::link('group/edit/'.$item->id) ?>" title="Edit">Edit</a>
             </td>

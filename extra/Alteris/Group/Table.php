@@ -48,29 +48,55 @@ class Table extends \Alteris\Model\Table
         return $result;
     }
 
-    public function getOptions($id = 0) {
-        $sql = "SELECT * FROM `group` ORDER BY `name`";
+    /**
+     * Pobiera drzewo opcji, do których można podpiąć grupy
+     *
+     * @param int $id
+     * @return array
+     */
+    public function getOptions($id = 0) : array
+    {
+        $sql = "SELECT * FROM `group` ORDER BY `hierarchy`";
         $result = [];
         foreach (\qDb::connect()->select($sql)->rows() as $row) {
-            $result[$row->id] = $this->rowRecord($row);
+            $str = str_repeat('-', $row->deep).' '.$row->name;
+
+            $result[$row->id] = $str;
         }
+
         return $result;
-
-        $options = [];
-        if ($empty) {
-            $options[0] = $empty;
-        }
-        foreach ($this->getAllRows() as $row) {
-            $options[$row->id] = $row->name;
-        }
-
-        return $options;
-
-
     }
 
+    /**
+     * Porządkuje drzewo, w ramach gałęzi alfabetycznie
+     *
+     * @param mixed $parent_id
+     * @param string $prefix
+     */
+    public function resetHierarchy($parent_id = 0, string $prefix = '') {
 
 
+
+        $sql = "SELECT * FROM `group` WHERE `parent_id` = '{$parent_id}' ORDER BY `name`";
+        $lp = 0;
+        if ($prefix !== '') {
+            $prefix .= '-';
+            $deep = intval(strlen($prefix) / 6) + 1;
+        }
+        else {
+            $deep = 1;
+        }
+        $connect = \qDb::connect();
+        foreach ($connect->select($sql)->rows() as $row) {
+            $lp++;
+            $hierarchy = $prefix . \qString::strPad0($lp, 5);
+            if ($row->hierarchy !== $hierarchy || $row->deep != $deep) {
+                $hSql = "UPDATE `group` SET `hierarchy` = '{$hierarchy}', `deep` = '{$deep}' WHERE `id` = {$row->id}";
+                $connect->query($hSql);
+            }
+            $this->resetHierarchy($row->id, $hierarchy);
+        }
+    }
 
 
 }

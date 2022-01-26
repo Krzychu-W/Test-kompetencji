@@ -3,8 +3,8 @@
 /**
  * Sprawdzenie wersji PHP.
  */     
-if (version_compare(PHP_VERSION, '7.0.0') < 0) {
-    echo 'Aplikacja wymaga PHP w wersji <strong>7.0</strong>! Serwer korzysta z PHP w wersji <strong>'.PHP_VERSION.'</strong>! Zaktualizuj wersję PHP na serwerze!';
+if (version_compare(PHP_VERSION, '7.4.0') < 0) {
+    echo 'Aplikacja wymaga PHP w wersji <strong>7.4</strong>! Serwer korzysta z PHP w wersji <strong>'.PHP_VERSION.'</strong>! Zaktualizuj wersję PHP na serwerze!';
     exit;
 }
 
