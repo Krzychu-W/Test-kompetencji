@@ -23,9 +23,11 @@ class Table extends \Alteris\Model\Table
         $this->addField('indeks', 'type:Varchar;size:24;default:');
         $this->addField('name', 'type:Varchar;size:128;default:');
         $this->addField('unit_id', 'type:Integer;attribs:UNSIGNED;default:0');
+        $this->addField('group_id', 'type:Integer;attribs:UNSIGNED;default:0');
         $this->addUnique('indeks', ['indeks']);
         $this->addIndex('name', ['name']);
         $this->addIndex('unit_id', ['unit_id']);
+        $this->addIndex('group_id', ['group_id']);
     }
 
     /**

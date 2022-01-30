@@ -1,5 +1,7 @@
 # Test kompetencji php
 
+Aplikacja napisane w PhpStorm.
+
 Aplikacja dzieli się na dwie części:
 
 - framework qAnt
@@ -22,24 +24,28 @@ W oparciu na qAnt zbudowałem aplikację phpBook, której założeniem jest szyb
 Nie jest jeszcze ukończona, ale jedna strona już powstała:
 
 - http://grawitacja.struktury.net/
+- http://historia.struktury.net/
 
-qAnt nie jest oparty na namespace i nie zawiera obsługi mySql. Opiera się na moich doświadczeniach z:
+qAnt nie jest oparty na namespace i nie zawiera obsługi mySql. Opiera się na moich **doświadczeniach** z:
 
 - Zend 1.5
 - CMS Simple
 - Drupal 7
 - I-Sklep
-- i przedw wszystkim autorskiego framework'u Clouder używanego w firmie Investmag od 10 lat, którego jestem pomysłodawcą
-- i współautorem.  
+- i przede wszystkim autorskiego framework'u Clouder używanego w firmie Investmag od 10 lat, którego jestem pomysłodawcą i współautorem.  
 
 Obsługę mySql dodałem w formie szczątkowej do qAnt, ale nie ma tam wyrafinowanych metod.
 
 Z dodanej wersji qAnt usunąłem to, co uznałem za nadmiarowe.
-Mogły tam pozostać elementy, które 
+Zostały tam elementy zbędne, których usuwanie wymagałoby dodatkowego czasy.
+
+qAnt jest pisany dla PHP 7.0 a nie dla PHP 7.4
+
+Najstarsze fragmenty qAnt mogę sięgać PHP 5 (dziedziczone fragmenty kodu ze staroci).
 
 ## Klasa Dziedzina
 
-Znajduje się w katalogu extra/Alteris i jest pisana w namespace.
+Znajduje się w katalogu extra/Alteris i jest pisana w namespace dla PHP 7.4 pisana na XAMPP 7.4 dla Windows.
 
 ### Model danych
 
@@ -78,6 +84,11 @@ if ($form->validate() {
 }
 ?>
 ```
+
+Walidacja pól odbywa się metodami definiowanymi poprzez nazwę:
+
+- field<nazwa pola dużą literą>Validate
+
 Nie wyklucza to jednak dodanie do obiektu Record dodatkowej walidacji. Ze względu na szybkość działania do tej walidacji
 preferuję zabezpieczenia w bazie SQL (unique, klucze obce) i obsługę błędów zapisu. 
 
@@ -101,6 +112,9 @@ Klasy:
 - Alteris\Product\Record
 - Alteris\Product\Form
 
+Uproszczony model zakłada połączenie produktu z liściem w jednej tabeli, co nie jest rozwiązaniem optymalnym (brak tabeli relacji product-group),
+ale przyspiesza napisanie testu. 
+
 ## Grupa materiałów
 
 Kontroler: qGroupController
@@ -109,12 +123,12 @@ Klasy:
 - Alteris\Group\Record
 - Alteris\Group\Form
 
-Stanąłem tutaj przed wyborem sposoby zapisu hierarchii. Istnieje wiele możliwości
-zależnie od ilości danych. Zdecydowałem się na model minimalizujący czas odczytu 
-na stronie internetowej. Przyjęty model danych w tabeli SQL wymaga zdefiniowania maksymalnego zagłębienia. Zagłębienie to 
-może być zmieniane konfiguracji i jego przestawienie wymaga zaktualizowania struktury.
+Stanąłem tutaj przed wyborem sposobu zapisu hierarchii. Istnieje wiele możliwości zależnie od ilości danych.
+Zdecydowałem się na model minimalizujący czas odczytu na stronie internetowej. Przyjęty model danych w tabeli SQL 
+wymaga zdefiniowania maksymalnego zagłębienia. Zagłębienie to może być zmieniane konfiguracji i jego przestawienie
+wymaga zaktualizowania struktury.
 
 Korzeń nie istnieje w zapisie SQL. Jest rekordem wirtualnym z id = 0
 
-
+Z diagramu UML odczytałem, że produktu mogą być tylko w liściach i tak zaimplementowałem walidację.
 

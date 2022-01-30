@@ -70,6 +70,8 @@ class Record
      */
     public function save():int
     {
+
+        // \qLog::dump($this->getValues());
         $id = $this->table->saveRecord($this->getValues(), $this->isNew);
         if ($id > 0) {
             $this->setValue('id', $id);

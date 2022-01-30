@@ -22,6 +22,7 @@ class Table extends \Alteris\Model\Table
         $this->setTable('group', 'autoincrement');
         $this->addField('name', 'type:Varchar;size:128;default:');
         $this->addField('parent_id', 'type:Integer;attribs:UNSIGNED;default:0');
+        $this->addField('hierarchy', 'type:Varchar;size:255;default:');
     }
 
     /**
@@ -54,14 +55,33 @@ class Table extends \Alteris\Model\Table
      * @param int $id
      * @return array
      */
-    public function getOptions($id = 0) : array
+    public function getOptions($id = 0, $fromId = 0) : array
     {
+        $notParent = false;
+        if ($fromId) {
+            $from = $this->getRecord($fromId);
+            $notParent = $from->hierarchy;
+        }
         $sql = "SELECT * FROM `group` ORDER BY `hierarchy`";
-        $result = [];
+        $result = [
+            0 => [
+                'label' => 'Root',
+                'none' => false,
+            ],
+        ];
         foreach (\qDb::connect()->select($sql)->rows() as $row) {
             $str = str_repeat('-', $row->deep).' '.$row->name;
+            $result[$row->id] = [
+                'label' => $str,
+                'none' => false,
+            ];
 
-            $result[$row->id] = $str;
+            if ($fromId) {
+                $cutHierarchy = substr($row->hierarchy, 0, strlen($notParent));
+                if ($cutHierarchy === $notParent) {
+                    $result[$row->id]['none'] = true;
+                }
+            }
         }
 
         return $result;
@@ -69,14 +89,12 @@ class Table extends \Alteris\Model\Table
 
     /**
      * Porządkuje drzewo, w ramach gałęzi alfabetycznie
+     * Funkcja rekurencyjna
      *
      * @param mixed $parent_id
      * @param string $prefix
      */
     public function resetHierarchy($parent_id = 0, string $prefix = '') {
-
-
-
         $sql = "SELECT * FROM `group` WHERE `parent_id` = '{$parent_id}' ORDER BY `name`";
         $lp = 0;
         if ($prefix !== '') {

@@ -53,6 +53,7 @@ class qProductController extends qControllerAction {
             qLayout::title('Nowy materiał');
             $pTable = new \Alteris\Product\Table();
             $record = $pTable->newRecord();
+            $record->group_id = qCtrl::arg(0, 0);
             $block = new qTemplate();
             $block->form = $this->edit($record);
             qLayout::set('content', $block->render('form/content'));
@@ -115,6 +116,9 @@ class qProductController extends qControllerAction {
                 $id = $record->save();
                 if ($id) {
                     qMessage::info('Zapis zakończył się sukcesem');
+                    if (qCtrl::arg(0, 0) >0 && qCtrl::ifAction('new')) {
+                        qCtrl::location('group/list');
+                    }
                     qCtrl::location('product/list');
                 }
                 else {

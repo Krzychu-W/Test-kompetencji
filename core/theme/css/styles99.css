@@ -330,6 +330,10 @@ article {
   clear: both;
 }
 
+option.red-option {
+    color: red;
+}
+
 #navigation {
   clear: both;
 }

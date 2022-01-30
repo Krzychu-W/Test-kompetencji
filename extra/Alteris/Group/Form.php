@@ -36,13 +36,21 @@ class Form extends \Alteris\Model\Form
 
         $field = $this->FormFieldSelect('parent_id');
 
+        $options = [];
+        $classes = [];
         $gTable = $record->getTable();
+        foreach ($gTable->getOptions(0, $record->id) as $key => $item) {
+            $options[$key] = $item['label'];
+            if ($item['none'] === true) {
+                $classes[$key] = 'red-option';
+            }
+        }
+        $field->options = $options;
+        $field->classes = $classes;
 
-        $field->options = $gTable->getOptions('- wybierz jednostkę nadrzędną');
         $field->label = 'Rodzic';
-        $field->value = $record->parent_id;
+        $field->value = intval($record->parent_id);
         $field->required = true;
-
 
         $actions = $this->FormFieldActions('actions');
 
@@ -74,6 +82,22 @@ class Form extends \Alteris\Model\Form
             $this->name->error = 'Pole jest za długie';
 
             return false;
+        }
+
+        return true;
+    }
+
+    public function fieldParent_idValidate() {
+        $parent_id = $this->parent_id->value;
+        $gTable = $this->getRecord()->getTable();
+        foreach ($gTable->getOptions(0, $this->id->value) as $key => $item) {
+            if ($key == $parent_id) {
+                if ($item['none'] === true) {
+                    $this->parent_id->error = 'Tego rodzica wybrać nie możesz';
+
+                    return false;
+                }
+            }
         }
 
         return true;

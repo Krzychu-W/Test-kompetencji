@@ -1,0 +1,17 @@
+INSERT INTO `group` (`id`, `name`, `parent_id`, `deep`, `hierarchy`) VALUES
+     (1, 'A1', 2, 2, '00002-00001'),
+     (2, 'A2', 0, 1, '00002'),
+     (3, 'A1a', 0, 1, '00001'),
+     (4, 'Materiały eksploatacyjne', 3, 2, '00001-00001'),
+     (5, 'Oryginalne', 4, 3, '00001-00001-00002'),
+     (6, 'Alternatywne', 4, 3, '00001-00001-00001'),
+     (7, 'Folie do faksów', 5, 4, '00001-00001-00002-00001'),
+     (8, 'Folie do faksów', 6, 4, '00001-00001-00001-00001'),
+     (9, 'Taśmy do drukarek igłowych', 6, 4, '00001-00001-00001-00002'),
+     (10, 'Taśmy do drukarek igłowych', 5, 4, '00001-00001-00002-00002'),
+     (11, 'Tusze i tonery do faksów', 6, 4, '00001-00001-00001-00003'),
+     (12, 'Tusze i tonery do faksów', 5, 4, '00001-00001-00002-00003'),
+     (13, 'Meble biurowe', 2, 2, '00002-00002'),
+     (14, 'Krzesła i fotele biurowe', 13, 3, '00002-00002-00002'),
+     (15, 'Biurka, szafy, kontenery', 13, 3, '00002-00002-00001'),
+     (16, 'Meble metalowe', 13, 3, '00002-00002-00003');

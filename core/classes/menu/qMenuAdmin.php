@@ -23,6 +23,11 @@ class qMenuAdmin {
             'class' => 'unit',
             'link' => 'unit/list',
         ];
+        $items[] = [
+            'title' => 'Reset SQL',
+            'class' => 'reset',
+            'link' => 'reset/page',
+        ];
 
 
         if (count($items) > 0){

@@ -43,10 +43,25 @@ class Form extends \Alteris\Model\Form
 
         $field = $this->FormFieldSelect('unit_id');
         $uTable = new \Alteris\Unit\Table();
-
         $field->options = $uTable->getOptions('- wybierz jednostkę miary');
         $field->label = 'Jednostka miary';
         $field->value = $record->unit_id;
+        $field->required = true;
+
+        $field = $this->FormFieldSelect('group_id');
+        $options = [];
+        $classes = [];
+        $gTable = new \Alteris\Group\Table();
+        foreach ($gTable->getOptions(0, $record->id) as $key => $item) {
+            $options[$key] = $item['label'];
+            if ($item['none'] === true) {
+                $classes[$key] = 'red-option';
+            }
+        }
+        $field->options = $options;
+        $field->classes = $classes;
+        $field->label = 'Grupa';
+        $field->value = $record->group_id;
         $field->required = true;
 
 

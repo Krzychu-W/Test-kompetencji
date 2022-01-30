@@ -24,10 +24,8 @@ class qGroupController extends qControllerAction {
             $submenu = new qSubmenu();
             $submenu->add('Dodaj nową grupę', qHref::link('group/new'));
             qLayout::set('submenu', $submenu->render());
-            $gTable = new \Alteris\Group\Table();
-
-$gTable->resetHierarchy();
-
+            //$gTable = new \Alteris\Group\Table();
+            //$gTable->resetHierarchy();
             $block = new qTemplate();
             $sql  = "SELECT A.*\n";
             $sql .= "  FROM `group` AS A\n";
@@ -52,9 +50,10 @@ $gTable->resetHierarchy();
         }
         else if ($action === 'new') {
             // nadanie tytułu strony
-            qLayout::title('Nowa grupq');
+            qLayout::title('Nowa grupa');
             $gTable = new \Alteris\Group\Table();
             $record = $gTable->newRecord();
+            $record->parent_id = qCtrl::arg(0, 0);
             $block = new qTemplate();
             $block->form = $this->edit($record);
             qLayout::set('content', $block->render('form/content'));
@@ -93,7 +92,6 @@ $gTable->resetHierarchy();
                 $json->openOverlay('Usunięcie nie powiodło się', array('transition' => 'fade', 'closeButton' => 'false'));
             }
             qContentJson::setJson($json);
-
         }
         else {
             $this->page404();
