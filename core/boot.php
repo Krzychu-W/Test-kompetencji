@@ -22,7 +22,9 @@ require SYSTEM_ROOT_PATH . DS.'core'.DS.'classes'.DS.'qLoader.php';
 spl_autoload_register(array('qLoader', 'autoload'));
 qTimeExec::init();
 
-$cfgPath = __DIR__.DS.'config.php';
+$cfgPath = __DIR__ . DS. 'config.php';
+qConfig::add($cfgPath);
+$cfgPath = dirname(__DIR__) . DS. 'config' .DS.'sql.php';
 qConfig::add($cfgPath);
 
 $domain = $_SERVER['SERVER_NAME'];
@@ -39,13 +41,5 @@ if (isset($_SERVER['HTTP_REFERER'])) {
 }
 // Set base_url
 qConfig::setSys('base_url', qCtrl::baseUrl());
-
-//konfiguracja ścieżek do mixed
-
-//$install = new qInstall();
-//if (!$install->check()) {
-//    echo $install->html();
-//    exit;
-//}
 
 require __DIR__.'/core.php';

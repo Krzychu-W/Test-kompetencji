@@ -27,7 +27,8 @@ class qGroupController extends qControllerAction {
             //$gTable = new \Alteris\Group\Table();
             //$gTable->resetHierarchy();
             $block = new qTemplate();
-            $sql  = "SELECT A.*\n";
+            $sql  = "SELECT A.*, (SELECT count(*) FROM `product` AS B WHERE B.group_id=A.id) as prods\n";
+            $sql .= ",(SELECT count(*)-1 FROM `group` AS C WHERE C.hierarchy LIKE CONCAT(A.hierarchy ,'%')) as sub\n";
             $sql .= "  FROM `group` AS A\n";
             $sql .= " ORDER BY A.`hierarchy`";
             $block->items = \qDb::connect()->select($sql)->rows();

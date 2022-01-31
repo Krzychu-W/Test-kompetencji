@@ -52,7 +52,7 @@ class Form extends \Alteris\Model\Form
         $options = [];
         $classes = [];
         $gTable = new \Alteris\Group\Table();
-        foreach ($gTable->getOptions(0, $record->id) as $key => $item) {
+        foreach ($gTable->getOptionsProd(0, $record->id) as $key => $item) {
             $options[$key] = $item['label'];
             if ($item['none'] === true) {
                 $classes[$key] = 'red-option';
@@ -63,6 +63,7 @@ class Form extends \Alteris\Model\Form
         $field->label = 'Grupa';
         $field->value = $record->group_id;
         $field->required = true;
+        $field->description = "Opcje czerwone są zabronione i walidowane przed zapisem";
 
 
         $actions = $this->FormFieldActions('actions');
@@ -135,6 +136,26 @@ class Form extends \Alteris\Model\Form
 
             return false;
         }
+
+        return true;
+    }
+
+    public function fieldGroup_idValidate() {
+        $group_id = intval($this->group_id->value);
+        if ($group_id == 0) {
+            $this->group_id->error = 'Przypisz produkt do grupy';
+            return false;
+        }
+        $gTable = new \Alteris\Group\Table();
+        $options = $gTable->getOptionsProd();
+        if (isset($options[$group_id])) {
+            if ($options[$group_id]['none']) {
+                $this->group_id->error = 'Tej grupy wybrać nie możesz';
+
+                return false;
+            }
+        }
+
 
         return true;
     }

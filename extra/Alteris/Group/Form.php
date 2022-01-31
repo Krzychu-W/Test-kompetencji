@@ -51,6 +51,7 @@ class Form extends \Alteris\Model\Form
         $field->label = 'Rodzic';
         $field->value = intval($record->parent_id);
         $field->required = true;
+        $field->description = "Opcje czerwone są zabronione i walidowane przed zapisem";
 
         $actions = $this->FormFieldActions('actions');
 

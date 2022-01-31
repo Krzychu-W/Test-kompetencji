@@ -52,7 +52,8 @@ class Table extends \Alteris\Model\Table
     /**
      * Pobiera drzewo opcji, do których można podpiąć grupy
      *
-     * @param int $id
+     * @param mixed $id - zakres
+     * @param mixed $fromId - aktualna grupa (0 - nowa grupa)
      * @return array
      */
     public function getOptions($id = 0, $fromId = 0) : array
@@ -62,7 +63,9 @@ class Table extends \Alteris\Model\Table
             $from = $this->getRecord($fromId);
             $notParent = $from->hierarchy;
         }
-        $sql = "SELECT * FROM `group` ORDER BY `hierarchy`";
+        $sql  = "SELECT A.*, (SELECT count(*) FROM `product` AS B WHERE B.group_id=A.id) as prods\n";
+        $sql .= "  FROM `group` AS A\n";
+        $sql .= " ORDER BY A.`hierarchy`";
         $result = [
             0 => [
                 'label' => 'Root',
@@ -75,12 +78,47 @@ class Table extends \Alteris\Model\Table
                 'label' => $str,
                 'none' => false,
             ];
-
             if ($fromId) {
                 $cutHierarchy = substr($row->hierarchy, 0, strlen($notParent));
                 if ($cutHierarchy === $notParent) {
+                    // wykluczenie ze względu na zagłębienie
                     $result[$row->id]['none'] = true;
                 }
+            }
+            if ($row->prods > 0) {
+                // wykluczenie ze względu na podpięte produkty
+                $result[$row->id]['none'] = true;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Pobiera drzewo opcji, do których można podpiąć produkty
+     *
+     * @return array|array[]
+     */
+    public function getOptionsProd() : array
+    {
+        $sql  = "SELECT A.*,(SELECT count(*)-1 FROM `group` AS C WHERE C.hierarchy LIKE CONCAT(A.hierarchy ,'%')) as sub\n";
+        $sql .= "  FROM `group` AS A\n";
+        $sql .= " ORDER BY A.`hierarchy`";
+        $result = [
+            0 => [
+                'label' => '(wybierz grupę)',
+                'none' => true,
+            ],
+        ];
+        foreach (\qDb::connect()->select($sql)->rows() as $row) {
+            $str = str_repeat('-', $row->deep).' '.$row->name;
+            $result[$row->id] = [
+                'label' => $str,
+                'none' => false,
+            ];
+            if ($row->sub > 0) {
+                // wykluczenie ze względu na podpięte podgrupy
+                $result[$row->id]['none'] = true;
             }
         }
 

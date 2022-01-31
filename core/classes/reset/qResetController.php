@@ -29,11 +29,11 @@ class qResetController extends qControllerAction {
             $commit = $this->getArg(1, 'none');
             if ('commit' === $commit) {
                 $connect = qDb::connect();
-                $sql = "TRUNCATE `struktury`.`group`";
+                $sql = "TRUNCATE `group`";
                 $connect->query($sql);
-                $sql = "TRUNCATE `struktury`.`product`";
+                $sql = "TRUNCATE `product`";
                 $connect->query($sql);
-                $sql = "TRUNCATE `struktury`.`unit`";
+                $sql = "TRUNCATE `unit`";
                 $connect->query($sql);
                 $json->rewrite('/group/list');
                 $path = qConfig::get('path.base');
