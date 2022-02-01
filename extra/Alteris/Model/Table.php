@@ -37,9 +37,6 @@ abstract class Table
      */
     protected array $unique = [];
 
-    /** @var int Hierarchia (0 - bez hierarchi,1 - tylko ordering, 2 - zagłębienia 1, itp */
-    protected $hierarchy = 0;
-
     /** konstruktor  */
     public function __construct()
     {
@@ -66,23 +63,7 @@ abstract class Table
         $this->unique[$name] = $fields;
     }
 
-    public function setHierarchy($deep) {
-        $this->hierarchy = $deep;
-        if ($deep = 1) {
-            $this->addField('ordering', 'type:Integer;UNSIGNED');
-        }
-        else if ($deep > 1) {
-            $this->addField('ordering', 'type:Integer;UNSIGNED');
-            $this->addField('parent', 'type:Integer;UNSIGNED');
-            $this->addField('hierarchy', 'type:Varchar;255');
-        }
-    }
-
     abstract public function init();
-
-
-
-
 
     public function getFields() {
         return $this->field;
@@ -198,14 +179,6 @@ abstract class Table
             }
         }
         return $result;
-    }
-
-    /**
-     * Odczyt poziomu hierarchy.
-     */
-    public function getHierarchy()
-    {
-        return $this->hierarchy;
     }
 
     /**

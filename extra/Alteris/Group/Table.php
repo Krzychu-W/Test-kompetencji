@@ -22,7 +22,20 @@ class Table extends \Alteris\Model\Table
         $this->setTable('group', 'autoincrement');
         $this->addField('name', 'type:Varchar;size:128;default:');
         $this->addField('parent_id', 'type:Integer;attribs:UNSIGNED;default:0');
+        $this->addField('deep', 'type:Tinyint;attribs:UNSIGNED;default:0');
         $this->addField('hierarchy', 'type:Varchar;size:255;default:');
+    }
+
+    public function getRecord($id): object
+    {
+        if ($id == 0) {
+            // wirtualny korzeń
+            $record = $this->newRecord();
+            $record->id = 0;
+            $record->name = 'ROOT';
+            return $record;
+        }
+        return parent::getRecord($id);
     }
 
     /**
@@ -152,6 +165,27 @@ class Table extends \Alteris\Model\Table
             }
             $this->resetHierarchy($row->id, $hierarchy);
         }
+    }
+
+    public function getCheldern($obj) {
+        $deep = $obj->deep + 1;
+        $hierarchy = $obj->hierarchy;
+        if ($deep > 1) {
+            $hierarchy .= '-';
+            $sql = "SELECT * FROM `group` WHERE `hierarchy` LIKE '{$hierarchy}%' AND `deep` = '{$deep}' ORDER BY `name`";
+        }
+        else {
+            $sql = "SELECT * FROM `group` WHERE `deep` = '{$deep}' ORDER BY `name`";
+        }
+
+
+
+        \qLog::write($deep,$hierarchy, $sql);
+        $result = [];
+        foreach (\qDb::connect()->select($sql)->rows() as $row) {
+            $result[$row->id] = $this->rowRecord($row);
+        }
+        return $result;
     }
 
 

@@ -43,6 +43,13 @@ qAnt jest pisany dla PHP 7.0 a nie dla PHP 7.4
 
 Najstarsze fragmenty qAnt mogę sięgać PHP 5 (dziedziczone fragmenty kodu ze staroci).
 
+## Instalacja
+
+Aplikacja działa z bazą danych mySql. Podłączenie do bazy ustawia się w pliku /config/sql.php
+Nazwy zmiennych są intuicyjne. Bazą należy załadować plikiem /config/install.sql
+
+Wersja działająca jest pod adresem http://test.struktury.net/ 
+
 ## Klasa Dziedzina
 
 Znajduje się w katalogu extra/Alteris i jest pisana w namespace dla PHP 7.4 pisana na XAMPP 7.4 dla Windows.
@@ -122,6 +129,7 @@ Klasy:
 - Alteris\Group\Table
 - Alteris\Group\Record
 - Alteris\Group\Form
+- Alteris\Group\Tree
 
 Stanąłem tutaj przed wyborem sposobu zapisu hierarchii. Istnieje wiele możliwości zależnie od ilości danych.
 Zdecydowałem się na model minimalizujący czas odczytu na stronie internetowej. Przyjęty model danych w tabeli SQL 
@@ -131,4 +139,7 @@ wymaga zaktualizowania struktury.
 Korzeń nie istnieje w zapisie SQL. Jest rekordem wirtualnym z id = 0
 
 Z diagramu UML odczytałem, że produktu mogą być tylko w liściach i tak zaimplementowałem walidację.
+
+Obiekt Tree służy prezentacji zagnieżdżonego drzewa. Obiekt prezentowany jest w nowym oknie w postaci dump'u.
+Można rozwinąć od dowolnej grupy. 
 

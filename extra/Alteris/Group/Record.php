@@ -16,6 +16,13 @@ class Record extends \Alteris\Model\Record
         return $id;
     }
 
+    public function getChildren() {
+
+        return $this->getTable()->getCheldern($this);
+    }
+
+
+
 
 }
 

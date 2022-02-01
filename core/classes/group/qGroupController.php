@@ -94,6 +94,14 @@ class qGroupController extends qControllerAction {
             }
             qContentJson::setJson($json);
         }
+        else if ($action === 'tree') {
+            $id = $this->getArg(1, 0);
+            $table = new \Alteris\Group\Table();
+            $record = $table->getRecord($id);
+            $name = 'Wykonane dla grupy: '.$record->id.': '. $record->name;
+            $tree = new \Alteris\Group\Tree($record);
+            qLog::dump($name, $tree);
+        }
         else {
             $this->page404();
         }
