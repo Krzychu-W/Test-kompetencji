@@ -871,7 +871,7 @@ class qCtrl {
         return $result;
     }
     
-    public function baseUrl() {
+    public static function baseUrl() {
         $url  = @(!isset($_SERVER["HTTPS"]) || $_SERVER["HTTPS"] != 'on') ? 'http://'.$_SERVER["SERVER_NAME"] : 'https://'.$_SERVER["SERVER_NAME"];
         $url .= ( $_SERVER["SERVER_PORT"] != 80 ) ? ":".$_SERVER["SERVER_PORT"] : "";
         return $url;
@@ -1072,7 +1072,7 @@ class qCtrl {
         }
     }
     
-    function calledClass(){
+    public static function calledClass(){
         $trace = debug_backtrace();
         $count = count($trace)-1;
         for ($i = 2; $i < $count; $i++) {
@@ -1083,7 +1083,7 @@ class qCtrl {
         return false;
     }
     
-    function initParam() {
+    public static function initParam() {
         // init
         if (isset($_SERVER['CONTENT_TYPE']) && $_SERVER['CONTENT_TYPE'] == 'application/json' ) {
             self::$paramPost = new qItems(json_decode(file_get_contents('php://input'), true));

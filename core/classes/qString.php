@@ -43,7 +43,7 @@ class qString {
         return self::str_pad_unicode($input, $lenght, '0', STR_PAD_LEFT);
     }
     
-    function str_pad_unicode($str, $pad_len, $pad_str = ' ', $dir = STR_PAD_RIGHT) {
+    public static function str_pad_unicode($str, $pad_len, $pad_str = ' ', $dir = STR_PAD_RIGHT) {
         $str_len = mb_strlen($str);
         $pad_str_len = mb_strlen($pad_str);
         if (!$str_len && ($dir == STR_PAD_RIGHT || $dir == STR_PAD_LEFT)) {

@@ -2,7 +2,7 @@
 <span class="icon"></span>
 <div class="txt"><div><h4><p><?= $question ?></p></h4></div></div>
 <?php if ($description) { ?><div><?= $description ?></div><?php } ?>
-<?php if( count(checkbox) > 0) { ?>
+<?php if( count($checkbox) > 0) { ?>
 <form id="form-choice" class="form" name="choice" method="post" accept-charset="UTF-8">
 <div id="form-body" class="form-body">
 <div id="form-field-choice-wrapper" class="form-field-checkboxes-wrapper">
@@ -20,7 +20,7 @@
 </div>
 </form>
 <?php } ?>
-<div class="btns<?php if (count(qItems) === 2){ echo 'btns2'; } ?>">
+<div class="btns<?php if (count($items) === 2){ echo 'btns2'; } ?>">
 <?php foreach($items as $key => $item) {
   $class = "btn btn{$key}";
   if ($item->danger) {

@@ -118,6 +118,7 @@ class qTemplate {
     private function compile($string, $fields) {
         extract($fields, EXTR_SKIP);
         ob_start();
+        qLog::write($string);
         eval('?>'.$string);
         return ob_get_clean();
     }

@@ -12,7 +12,8 @@ class qModifier
             $class = ucfirst($mod[0]);
             unset($mod[0]);
             $obj = 'qModifier'.$class;
-            $str = call_user_func_array(array($obj, 'parse'), array($str, implode(':', $mod), &$return));
+            //qLog::dump(array($obj, 'parse'), array($str, implode(':', $mod), $return));
+            $str = call_user_func_array(array($obj, 'parse'), array($str, implode(':', $mod), $return));
         }
 
         return $str;
