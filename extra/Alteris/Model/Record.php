@@ -128,14 +128,15 @@ class Record
         return null;
     }
 
+    /**
+     * Pobira wartości pól w postaci tablicy asocjacyjnej
+     *
+     * @return array
+     */
     public function getValues()
     {
         return $this->fields;
     }
-
-
-
-
 
     /**
      * Szybki dostęp do danych prostych
@@ -185,6 +186,11 @@ class Record
         $this->defFields($this->table->getFields());
     }
 
+    /**
+     * Zwraca tabelę modelu
+     *
+     * @return object
+     */
     public function getTable()
     {
         return $this->table;

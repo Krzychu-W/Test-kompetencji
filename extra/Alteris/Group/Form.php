@@ -63,7 +63,7 @@ class Form extends \Alteris\Model\Form
         $field->value = 'Zapisz';
         $field->class = 'btn btn-primary';
 
-        if (!$record->isNew()) {
+        if ($record->canDeleted()) {
             $field = $actions->FormFieldAlter('delete');
             $field->value = 'Usuń';
             $field->link = 'group/delete/'.$record->id;
@@ -75,6 +75,12 @@ class Form extends \Alteris\Model\Form
 
     // funkcje walidacji w/g nazy pól
 
+    /**
+     * Walidacja pola name
+     * Nazwa może się powtarzać
+     *
+     * @return bool
+     */
     public function fieldNameValidate()
     {
         $value = $this->name->value = trim($this->name->value);
@@ -92,6 +98,13 @@ class Form extends \Alteris\Model\Form
         return true;
     }
 
+    /**
+     * Walidacja pola parent_id
+     *
+     * Zabezpieczenie przez zapętleniem oraz przed dodaniem do liścia, który ma produktu.
+     *
+     * @return bool
+     */
     public function fieldParent_idValidate() {
         $parent_id = $this->parent_id->value;
         $gTable = $this->getRecord()->getTable();

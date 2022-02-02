@@ -88,7 +88,12 @@ class Form extends \Alteris\Model\Form
 
     // funkcje walidacji w/g nazy pól
 
-    public function fieldIndeksValidate()
+    /**
+     * Walidacja pola indeks. Musi być unikatowe
+     *
+     * @return bool
+     */
+    public function fieldIndeksValidate():bool
     {
         $value = $this->indeks->value = trim($this->indeks->value);
         if ($value == '') {
@@ -115,6 +120,11 @@ class Form extends \Alteris\Model\Form
         return true;
     }
 
+    /**
+     * Walidacja pola name
+     *
+     * @return bool
+     */
     public function fieldNameValidate()
     {
         $value = $this->name->value = trim($this->name->value);
@@ -132,6 +142,11 @@ class Form extends \Alteris\Model\Form
         return true;
     }
 
+    /**
+     * Walidacja jednostki miary
+     *
+     * @return bool
+     */
     public function fieldUnit_idValidate()
     {
         $value = intval($this->unit_id->value);
@@ -144,6 +159,12 @@ class Form extends \Alteris\Model\Form
         return true;
     }
 
+    /**
+     * Walidacja podpięcia grupy
+     * Grupa nie może mieć podgrup
+     *
+     * @return bool
+     */
     public function fieldGroup_idValidate() {
         $group_id = intval($this->group_id->value);
         if ($group_id == 0) {
@@ -159,7 +180,6 @@ class Form extends \Alteris\Model\Form
                 return false;
             }
         }
-
 
         return true;
     }

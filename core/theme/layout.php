@@ -63,7 +63,7 @@
                 <div id="bottom-message-content" data-ref="0"></div>
             </div>
             <footer>
-                Kontakt
+                Kontakt krzysztof@struktury.net
             </footer>
         </div>
         <?php

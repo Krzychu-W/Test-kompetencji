@@ -6,7 +6,6 @@
  */
 namespace Alteris\Unit;
 
-
 class Table extends \Alteris\Model\Table
 {
 

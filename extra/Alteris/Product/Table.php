@@ -6,7 +6,9 @@
  */
 namespace Alteris\Product;
 
-
+/**
+ * Tabela produktu
+ */
 class Table extends \Alteris\Model\Table
 {
 

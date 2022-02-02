@@ -1,7 +1,4 @@
 <?php
-
-namespace Alteris\Unit;
-
 /**
  * Edycja rekordu, funkcje walidacji, formularze danych itp
  *
@@ -9,6 +6,8 @@ namespace Alteris\Unit;
  *
  * @author Krzysztof Wałek <krzysztof@struktury.net>
  */
+namespace Alteris\Unit;
+
 class Form extends \Alteris\Model\Form
 {
     /**
@@ -66,6 +65,12 @@ Dodatkowo walidacja nie dopuszcza do duplikacji nazw';
 
     // funkcje walidacji w/g nazy pól
 
+    /**
+     * Walidacja pola name
+     * Nazwa musi byc unikatowa
+     *
+     * @return bool
+     */
     public function fieldNameValidate()
     {
         $value = $this->name->value = trim($this->name->value);
@@ -95,6 +100,11 @@ Dodatkowo walidacja nie dopuszcza do duplikacji nazw';
         return true;
     }
 
+    /**
+     * Walidacja skrótu
+     *
+     * @return bool
+     */
     public function fieldShortValidate()
     {
         $value = $this->short->value = trim($this->short->value);

@@ -78,7 +78,7 @@ class qString {
     }
     
     /**
-    * Funkcja działa podobniej jak explode, dodtakowo uzupełna tablicję
+    * Funkcja działa podobnie jak explode, dodatkowo uzupełna tablicję
     * o minimalną wymagana ilośc elementów.
     *
     * @param string $delimiter

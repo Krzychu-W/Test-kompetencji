@@ -1,11 +1,14 @@
 <?php
+/**
+ * Rekord jednostki miar
+ */
 namespace Alteris\Unit;
 
 class Record extends \Alteris\Model\Record
 {
 
     /**
-     * Czy jednstka miar jest użyta
+     * Czy jednostka miar jest użyta
      *
      * @return bool
      */

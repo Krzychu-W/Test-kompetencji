@@ -26,6 +26,13 @@ class Table extends \Alteris\Model\Table
         $this->addField('hierarchy', 'type:Varchar;size:255;default:');
     }
 
+    /**
+     * Pobiera rekord \Alteris\Group\Record
+     *
+     * @param mixed $id
+     * @return object
+     * @throws \Exception
+     */
     public function getRecord($id): object
     {
         if ($id == 0) {
@@ -39,7 +46,7 @@ class Table extends \Alteris\Model\Table
     }
 
     /**
-     * Pobranie rekordu
+     * Definicja modelu rekordu
      *
      * @return \Alteris\Group\Record
      */
@@ -167,7 +174,17 @@ class Table extends \Alteris\Model\Table
         }
     }
 
-    public function getCheldern($obj) {
+    /**
+     *
+     * @return array
+     */
+    /**
+     * Pobranie BEZPOŚREDNICH potomków
+     * @param object $obj \Alteris\Group\Record
+     * @return array of \Alteris\Group\Record
+     */
+    public function getCheldern(object $obj):array
+    {
         $deep = $obj->deep + 1;
         $hierarchy = $obj->hierarchy;
         if ($deep > 1) {
@@ -177,15 +194,30 @@ class Table extends \Alteris\Model\Table
         else {
             $sql = "SELECT * FROM `group` WHERE `deep` = '{$deep}' ORDER BY `name`";
         }
-
-
-
-        \qLog::write($deep,$hierarchy, $sql);
         $result = [];
         foreach (\qDb::connect()->select($sql)->rows() as $row) {
             $result[$row->id] = $this->rowRecord($row);
         }
         return $result;
+    }
+
+    /**
+     * Czy rekord może być usunięty
+     * @param object $obj \Alteris\Group\Record
+     *
+     * @return bool
+     */
+    public function canDeleted(object $obj):bool
+    {
+        $sql = "SELECT (SELECT count(*) FROM `product` WHERE `group_id` = '{$obj->id}') AS cp".
+            ",(SELECT count(*) FROM `group` WHERE `parent_id` = '{$obj->id}') AS cg";
+        $row = \qDb::connect()->select($sql)->row();
+        if ($row) {
+            if (($row->cp + $row->cg)> 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
