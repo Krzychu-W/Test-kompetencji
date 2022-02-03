@@ -18,12 +18,6 @@ class Form extends \Alteris\Model\Form
     public function init()
     {
         $record = func_get_arg(0);
-        if (func_num_args() > 1) {
-            $atribs = func_get_arg(1);
-        }
-        else {
-            $atribs = [];
-        }
         //
         $attribs = $this->attribs();
         $attribs->name = 'group';

@@ -1,5 +1,13 @@
 <?php
 namespace Alteris\Group;
+/**
+ * Rekord grupy
+ *
+ * @property $id
+ * @property $name
+ * @property $deep
+ * @property $hierarchy
+ */
 
 class Record extends \Alteris\Model\Record
 {

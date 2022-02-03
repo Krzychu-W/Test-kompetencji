@@ -1,9 +1,13 @@
 <?php
-/**
- * Rekord jednostki miar
- */
 namespace Alteris\Unit;
 
+/**
+ * Rekord jednostki miar
+ *
+ * @property $id
+ * @property $name
+ * @property $short
+ */
 class Record extends \Alteris\Model\Record
 {
 

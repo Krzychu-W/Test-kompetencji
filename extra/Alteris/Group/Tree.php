@@ -1,7 +1,6 @@
 <?php
 namespace Alteris\Group;
 
-
 /**
  * W celu łatwej prezentacji zdecydowałem się, że Tree nie będzie przechowywał \Alteris\Group\Record,
  * ale wyłącznie id i nazwy, co pozwala na łatwą prezentację na ekranie. Po tym względem spreparowany jest obiekt.

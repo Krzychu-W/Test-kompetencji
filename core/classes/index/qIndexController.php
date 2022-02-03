@@ -5,10 +5,7 @@ class qIndexController extends qControllerAction {
     public function action() {
         $action = $this->getArg(0, 'index');
         if ($action === 'index') {
-            qLayout::title('Strona główna');
-            $x = qDb::connect();
-
-            qLayout::set('content', "Nie ma jeszcze zdefiniowanej strony głównej");
+            $this->redir('group/list');
         }
         else if ($action === 'nomodule') {
             if (qConfig::get('page-404')) {

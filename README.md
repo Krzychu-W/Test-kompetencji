@@ -17,11 +17,11 @@ Moje własne serwisy są oparte na Drupal'u 7
 - http://wp39.struktury.net/
 - http://kumuradojo.pl/
 
-Jego następca, Drupal 8/9 jest pomyłką, która wypacza ideę powszechnego CRM'a.
+Jego następca, Drupal 8/9 jest pomyłką, która wypacza ideę powszechnego CMS'a.
 
 W oparciu na qAnt zbudowałem aplikację phpBook, której założeniem jest szybkość działania i wielodomenowość.
 
-Nie jest jeszcze ukończona, ale jedna strona już powstała:
+Nie jest jeszcze ukończona, ale jedna strona już powstała, mam też wieli mikro stron.
 
 - http://grawitacja.struktury.net/
 - http://historia.struktury.net/
@@ -36,17 +36,21 @@ qAnt nie jest oparty na namespace i nie zawiera obsługi mySql. Opiera się na m
 
 Obsługę mySql dodałem w formie szczątkowej do qAnt, ale nie ma tam wyrafinowanych metod.
 
-Z dodanej wersji qAnt usunąłem to, co uznałem za nadmiarowe.
+Z tej wersji qAnt usunąłem to, co uznałem za nadmiarowe.
 Zostały tam elementy zbędne, których usuwanie wymagałoby dodatkowego czasy.
 
-qAnt jest pisany dla PHP 7.0 a nie dla PHP 7.4
+qAnt jest pisany dla **PHP 7.0** a nie dla **PHP 7.4**
 
 Najstarsze fragmenty qAnt mogę sięgać PHP 5 (dziedziczone fragmenty kodu ze staroci).
 
 ## Instalacja
 
-Aplikacja działa z bazą danych mySql. Podłączenie do bazy ustawia się w pliku /config/sql.php
-Nazwy zmiennych są intuicyjne. Bazą należy załadować plikiem /config/install.sql
+Aplikacja działa z bazą danych mySql. Podłączenie do bazy ustawia się w pliku:
+- /config/sql.php
+
+Nazwy zmiennych są intuicyjne. Bazą należy załadować plikiem:
+
+- /config/install.sql
 
 Wersja działająca jest pod adresem http://test.struktury.net/ 
 
@@ -71,7 +75,7 @@ poprzez pole id z autoincrement.
 
 #### Record
 
-Rekord modelu zaprojektowany jes jako bardzo lekki. Ma nie obciążać pamieci i dlatego 
+Rekord modelu zaprojektowany jest jako bardzo lekki. Ma nie obciążać pamięci i dlatego 
 pozbawiony jest walidacji danych przed zapisem. W nim mają być dostępne metody obiektu.
 
 #### Form
@@ -94,7 +98,7 @@ if ($form->validate() {
 
 Walidacja pól odbywa się metodami definiowanymi poprzez nazwę:
 
-- field<nazwa pola dużą literą>Validate
+- field<Nazwa pola dużą literą>Validate
 
 Nie wyklucza to jednak dodanie do obiektu Record dodatkowej walidacji. Ze względu na szybkość działania do tej walidacji
 preferuję zabezpieczenia w bazie SQL (unique, klucze obce) i obsługę błędów zapisu. 
@@ -143,3 +147,14 @@ Z diagramu UML odczytałem, że produktu mogą być tylko w liściach i tak zaim
 Obiekt Tree służy prezentacji zagnieżdżonego drzewa. Obiekt prezentowany jest w nowym oknie w postaci dump'u.
 Można rozwinąć od dowolnej grupy. 
 
+## Klasy kontra tablice
+
+W elementach wewnętrznych preferuję tablice, ponieważ są one znacznie szybsze i lżejsze niź klasy. Klasy rezerwuję do
+elementów wystawianych na zewnątrz. 
+
+## Test jednostkowe
+
+Ogólną zasadę testów zrozumiałem. Jednak za późno już, żeby próbować je implementować. Na pewno nie wiem jak preparować
+bazę danych do nich i na jakiej zasadzie budować strukturę plików celem automatyzacji.
+
+**Pozdrawiam, Krzysztof Wałek.**
